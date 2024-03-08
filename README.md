@@ -56,6 +56,10 @@ For more training commands and details, please check the docs in [BasicSR](https
 · You can run ./inference/inference_WFFGAN.py for your own images.
 
 
+## Results
+· The results of PSNR-oriented WFFGAN and perception-oriented WFFGAN on benchmark datasets are placed at ./results floder.
+
+
 ## Acknowledgement
 This code is based on [BasicSR](https://github.com/XPixelGroup/BasicSR) toolbox. Thanks for the awesome work.
 
