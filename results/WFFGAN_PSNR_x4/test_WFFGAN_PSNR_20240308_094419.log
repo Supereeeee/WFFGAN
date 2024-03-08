@@ -1,0 +1,789 @@
+2024-03-08 09:44:19,359 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 1.13.0+cu117
+	TorchVision: 0.14.0+cu117
+2024-03-08 09:44:19,359 INFO: 
+  name: WFFGAN_PSNR
+  model_type: SRModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test_1:[
+      name: set5
+      type: PairedImageDataset
+      dataroot_gt: datasets/set5/GT
+      dataroot_lq: datasets/set5/LRx4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_2:[
+      name: set14
+      type: PairedImageDataset
+      dataroot_gt: datasets/set14/GT
+      dataroot_lq: datasets/set14/LRx4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_3:[
+      name: BSD100
+      type: PairedImageDataset
+      dataroot_gt: datasets/BSD100/GT
+      dataroot_lq: datasets/BSD100/LRx4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_4:[
+      name: Urban100
+      type: PairedImageDataset
+      dataroot_gt: datasets/Urban100/GT
+      dataroot_lq: datasets/Urban100/LRx4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: WFFGAN
+  ]
+  path:[
+    pretrain_network_g: experiments/WFFGAN_PSNR/models/net_g_500000.pth
+    strict_load_g: True
+    results_root: /home/yg/HQW/BasicSR/results/WFFGAN_PSNR
+    log: /home/yg/HQW/BasicSR/results/WFFGAN_PSNR
+    visualization: /home/yg/HQW/BasicSR/results/WFFGAN_PSNR/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+    metrics:[
+      PSNR:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: True
+        better: higher
+      ]
+      SSIM:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: True
+        better: higher
+      ]
+      NIQE:[
+        type: calculate_niqe
+        crop_border: 4
+        better: lower
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2024-03-08 09:44:19,359 INFO: Dataset [PairedImageDataset] - set5 is built.
+2024-03-08 09:44:19,359 INFO: Number of test images in set5: 5
+2024-03-08 09:44:19,360 INFO: Dataset [PairedImageDataset] - set14 is built.
+2024-03-08 09:44:19,360 INFO: Number of test images in set14: 14
+2024-03-08 09:44:19,363 INFO: Dataset [PairedImageDataset] - BSD100 is built.
+2024-03-08 09:44:19,363 INFO: Number of test images in BSD100: 100
+2024-03-08 09:44:19,366 INFO: Dataset [PairedImageDataset] - Urban100 is built.
+2024-03-08 09:44:19,366 INFO: Number of test images in Urban100: 100
+2024-03-08 09:44:19,446 INFO: Network [WFFGAN] is created.
+2024-03-08 09:44:20,544 INFO: Network: WFFGAN, with parameters: 7,193,987
+2024-03-08 09:44:20,544 INFO: WFFGAN(
+  (conv_first): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (stage1): Stage1(
+    (SMSDB): SMSDB(
+      (layers): Sequential(
+        (0): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (1): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (2): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (3): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+      )
+    )
+    (upsampling): upsampling(
+      (up): Sequential(
+        (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): PixelShuffle(upscale_factor=2)
+        (2): Conv2d(16, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (3): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+    (DWT1): DWT1(
+      (conv): Sequential(
+        (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+      (conv1): Sequential(
+        (0): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+      (DWT): DWT()
+      (SMSDB): SMSDB(
+        (layers): Sequential(
+          (0): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (1): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (2): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (3): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+        )
+      )
+      (upsampling): upsampling(
+        (up): Sequential(
+          (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): PixelShuffle(upscale_factor=2)
+          (2): Conv2d(16, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (3): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+    )
+    (IWT): IWT()
+    (conv1): Sequential(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    )
+    (conv2): Sequential(
+      (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    )
+  )
+  (stage2): Stage2(
+    (SMSDB): SMSDB(
+      (layers): Sequential(
+        (0): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (1): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (2): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+        (3): MSDB(
+          (conv_first): Sequential(
+            (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv1): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv5): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv7): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+          (conv9): Sequential(
+            (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+            (1): LeakyReLU(negative_slope=0.2, inplace=True)
+          )
+        )
+      )
+    )
+    (upsampling): upsampling(
+      (up): Sequential(
+        (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): PixelShuffle(upscale_factor=2)
+        (2): Conv2d(16, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (3): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+    )
+    (DWT2): DWT2(
+      (conv): Sequential(
+        (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+      (conv1): Sequential(
+        (0): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): LeakyReLU(negative_slope=0.2, inplace=True)
+      )
+      (DWT): DWT()
+      (SMSDB): SMSDB(
+        (layers): Sequential(
+          (0): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (1): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (2): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+          (3): MSDB(
+            (conv_first): Sequential(
+              (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv1): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv2): Sequential(
+              (0): Conv2d(96, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv3): Sequential(
+              (0): Conv2d(160, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv4): Sequential(
+              (0): Conv2d(224, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv5): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv7): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+            (conv9): Sequential(
+              (0): Conv2d(32, 32, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4))
+              (1): LeakyReLU(negative_slope=0.2, inplace=True)
+            )
+          )
+        )
+      )
+    )
+    (IWT): IWT()
+    (conv1): Sequential(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    )
+    (conv2): Sequential(
+      (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    )
+  )
+  (upsampling): upsampling(
+    (up): Sequential(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): PixelShuffle(upscale_factor=2)
+      (2): Conv2d(16, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (3): LeakyReLU(negative_slope=0.2, inplace=True)
+    )
+  )
+  (conv): Sequential(
+    (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.2, inplace=True)
+  )
+  (conv_last): Sequential(
+    (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+)
+2024-03-08 09:44:23,014 INFO: Loading WFFGAN model from experiments/WFFGAN_PSNR/models/net_g_500000.pth, with param key: [params].
+2024-03-08 09:44:23,036 INFO: Model [SRModel] is created.
+2024-03-08 09:44:23,036 INFO: Testing set5...
+2024-03-08 09:45:11,163 INFO: Validation set5
+	 # PSNR: 32.4386	Best: 32.4386 @ WFFGAN_PSNR iter
+	 # SSIM: 0.8979	Best: 0.8979 @ WFFGAN_PSNR iter
+	 # NIQE: 7.1276	Best: 7.1276 @ WFFGAN_PSNR iter
+
+2024-03-08 09:45:11,163 INFO: Testing set14...
+2024-03-08 09:45:20,776 INFO: Validation set14
+	 # PSNR: 28.7751	Best: 28.7751 @ WFFGAN_PSNR iter
+	 # SSIM: 0.7871	Best: 0.7871 @ WFFGAN_PSNR iter
+	 # NIQE: 6.1565	Best: 6.1565 @ WFFGAN_PSNR iter
+
+2024-03-08 09:45:20,776 INFO: Testing BSD100...
+2024-03-08 09:45:40,724 INFO: Validation BSD100
+	 # PSNR: 27.7185	Best: 27.7185 @ WFFGAN_PSNR iter
+	 # SSIM: 0.7416	Best: 0.7416 @ WFFGAN_PSNR iter
+	 # NIQE: 6.3838	Best: 6.3838 @ WFFGAN_PSNR iter
+
+2024-03-08 09:45:40,725 INFO: Testing Urban100...
+2024-03-08 09:47:43,255 INFO: Validation Urban100
+	 # PSNR: 26.6221	Best: 26.6221 @ WFFGAN_PSNR iter
+	 # SSIM: 0.8029	Best: 0.8029 @ WFFGAN_PSNR iter
+	 # NIQE: 5.6130	Best: 5.6130 @ WFFGAN_PSNR iter
+
