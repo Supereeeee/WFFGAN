@@ -20,7 +20,7 @@ python setup.py develop
 ## How To Test
 · Refer to ./options/test for the configuration file of the model to be tested and prepare the testing data.  
 
-· The pre-trained models have been palced in ./experiments/pretrained_models/  
+· The pre-trained models have been palced in ./experiments/pretrained_models/ floder.
 
 · You can test the results of PSNR-oriented WFFGAN by running the follwing codes:  
 ```
@@ -57,7 +57,7 @@ For more training commands and details, please check the docs in [BasicSR](https
 
 
 ## Results
-· The results of PSNR-oriented WFFGAN and perception-oriented WFFGAN on benchmark datasets are placed at ./results floder.
+· The results of PSNR-oriented WFFGAN and perception-oriented WFFGAN on benchmark datasets have been placed in ./results floder.
 
 
 ## Acknowledgement
