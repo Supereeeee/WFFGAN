@@ -1,5 +1,4 @@
 # Wavelet-based feature fusion generative adversarial network for single image super-resolution(WFFGAN)
-Yinggan Tang, Quanwei Hu, Chunning BU
 
 ## Environment in our experiments
 [python 3.8]
